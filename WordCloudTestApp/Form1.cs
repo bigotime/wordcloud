@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -25,10 +26,13 @@ namespace WordCloudTestApp
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-		
+			var s = new Stopwatch();
+			s.Start();
 			var wc = new WordCloudGen(1000, 600);
 			if(resultPictureBox.Image != null) resultPictureBox.Image.Dispose();
 			Image i = wc.Draw(Words, Frequencies);
+			s.Stop();
+			elapsedLabel.Text = s.Elapsed.TotalMilliseconds.ToString();
 			resultPictureBox.Image = i;
 		}
 

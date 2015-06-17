@@ -8,9 +8,6 @@ namespace WordCloud
 		public OccupancyMap(int width, int height) : base(width, height)
 		{
 			Rand = new Random();
-
-			XPoses = new List<int>(Width * Height);
-			YPoses = new List<int>(Width * Height);
 		}
 
 		public bool TryFindUnoccupiedPosition(int sizeX, int sizeY, out int oPosX, out int oPosY)
@@ -18,31 +15,46 @@ namespace WordCloud
 			oPosX = -1;
 			oPosY = -1;
 
-			XPoses.Clear();
-			YPoses.Clear();
+			int startPosX = Rand.Next(1, Width);
+			int startPosY = Rand.Next(1, Height);
 
-			for (int i = 1; i < (Height - sizeY); ++i)
+			int x, y, dx, dy;
+			x = y = dx = 0;
+			dy = -1;
+			int width = Width - sizeX;
+			int height = Height - sizeY;
+
+			int t = Math.Max(width, height);
+			int maxI = t * t;
+
+			for (int i = 0; i < maxI; i++)
 			{
-				for (int j = 1; j < (Width - sizeX); ++j)
+				if ((-width / 2 <= x) && (x <= width / 2) && (-height / 2 <= y) && (y <= height / 2))
 				{
-					if (GetArea(j, i, sizeX, sizeY) == 0)
+					int posX = x + startPosX;
+					int posY = y + startPosY;
+					if (posY > 0 && posY < Height - sizeY && posX > 0 && posX < Width - sizeX)
 					{
-						XPoses.Add(j);
-						YPoses.Add(i);
-					}
+						if (GetArea(posX, posY, sizeX, sizeY) == 0)
+						{
+							oPosX = posX;
+							oPosY = posY;
+							return true;
+						}
+					}	
 				}
+				if ((x == y) || ((x < 0) && (x == -y)) || ((x > 0) && (x == 1 - y)))
+				{
+					t = dx;
+					dx = -dy;
+					dy = t;
+				}
+				x += dx;
+				y += dy;
 			}
 
-			if (XPoses.Count > 0)
-			{
-				int posItr = Rand.Next(XPoses.Count);
-				oPosX = XPoses[posItr];
-				oPosY = YPoses[posItr];
-				return true;
-			}
 			return false;
 		}
-
 
 		private List<int> XPoses { get; set; }
 
