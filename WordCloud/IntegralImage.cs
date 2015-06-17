@@ -13,11 +13,17 @@ namespace WordCloud
 
 		public void Update(FastImage image)
 		{
-			Array.Clear(Integral, 0, Integral.Length);
+			Update(image, 1, 1);
+		}
 
-			for (int i = 1; i < image.Height; ++i)
+		public void Update(FastImage image, int posX, int posY)
+		{
+			if (posX < 1) posX = 1;
+			if (posY < 1) posY = 1;
+
+			for (int i = posY; i < image.Height; ++i)
 			{
-				for (int j = 1; j < image.Width; ++j)
+				for (int j = posX; j < image.Width; ++j)
 				{
 					byte pixel = 0;
 					for (int p = 0; p < image.PixelFormatSize; ++p)

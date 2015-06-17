@@ -84,7 +84,7 @@ namespace WordCloud
 					if (fontSize <= 0) break;
 
 					g.DrawString(words[i], font, new SolidBrush(FontColor), posX, posY, format);
-					Map.Update(Image);
+					Map.Update(Image, posX, posY);
 				}
 			}
 
