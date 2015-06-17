@@ -20,7 +20,8 @@ namespace WordCloud
 		/// <param name="fontColor">Color of the font.</param>
 		/// <param name="maxFontSize">Maximum size of the font.</param>
 		/// <param name="fontStep">The font step to use.</param>
-		public WordCloud(int width, int height, bool useRank = false, Color? fontColor = null, int maxFontSize = -1, int fontStep = 1)
+		public WordCloud(int width, int height, bool useRank = false, Color? fontColor = null, int maxFontSize = -1,
+			int fontStep = 1)
 		{
 			Map = new OccupancyMap(width, height);
 			Image = new FastImage(width, height, PixelFormat.Format32bppArgb);
@@ -60,11 +61,11 @@ namespace WordCloud
 			{
 				g.Clear(Color.Transparent);
 				g.TextRenderingHint = TextRenderingHint.AntiAlias;
-				for(int i = 0; i < words.Count; ++i)
+				for (int i = 0; i < words.Count; ++i)
 				{
 					if (!UseRank)
 					{
-						fontSize = (int)Math.Min(fontSize, 100 * Math.Log10(freqs[i] + 100));
+						fontSize = (int) Math.Min(fontSize, 100*Math.Log10(freqs[i] + 100));
 					}
 					var format = StringFormat.GenericTypographic;
 					format.FormatFlags &= ~StringFormatFlags.LineLimit;
@@ -89,26 +90,66 @@ namespace WordCloud
 
 			var result = Image.Bitmap.Clone();
 			Image.Dispose();
-			return (Image)result;
+			return (Image) result;
 		}
 
-		private Color FontColor { get { return m_fontColor ?? GetRandomColor(); } set { m_fontColor = value; } }
+
+		/// <summary>
+		/// Gets font colour or random if font wasn't set
+		/// </summary>
+		private Color FontColor
+		{
+			get { return m_fontColor ?? GetRandomColor(); }
+			set { m_fontColor = value; }
+		}
+
 
 		private Color? m_fontColor;
 
+
+		/// <summary>
+		/// Gets a random color.
+		/// </summary>
+		/// <returns>Color</returns>
 		private Color GetRandomColor()
 		{
 			return Color.FromArgb(Random.Next(0, 255), Random.Next(0, 255), Random.Next(0, 255));
-			// The error is here
 		}
 
+
+		/// <summary>
+		/// Used to select random colors.
+		/// </summary>
 		private Random Random { get; set; }
+
+
+		/// <summary>
+		/// Working image.
+		/// </summary>
 		private FastImage Image { get; set; }
+
+
+		/// <summary>
+		/// Keeps track of word positions using integral image.
+		/// </summary>
 		private OccupancyMap Map { get; set; }
+
+
+		/// <summary>
+		/// Gets or sets the maximum size of the font.
+		/// </summary>
 		private int MaxFontSize { get; set; }
 
+
+		/// <summary>
+		/// User input order instead of frequency
+		/// </summary>
 		private bool UseRank { get; set; }
 
+
+		/// <summary>
+		/// Amount to decrement font size each time a word won't fit.
+		/// </summary>
 		private int FontStep { get; set; }
 	}
 }
