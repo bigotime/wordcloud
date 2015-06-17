@@ -26,9 +26,9 @@ namespace WordCloudTestApp
 		private void button1_Click(object sender, EventArgs e)
 		{
 		
-			var mWc = new WordCloudGen(1000, 600);
+			var wc = new WordCloudGen(1000, 600);
 			if(resultPictureBox.Image != null) resultPictureBox.Image.Dispose();
-			Image i = mWc.Draw(Words, Frequencies);
+			Image i = wc.Draw(Words, Frequencies);
 			resultPictureBox.Image = i;
 		}
 
