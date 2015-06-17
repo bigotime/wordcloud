@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using WordCloud;
+using WordCloudGen = WordCloud.WordCloud;
 
 namespace WordCloudTestApp
 {
@@ -31,7 +26,7 @@ namespace WordCloudTestApp
 		private void button1_Click(object sender, EventArgs e)
 		{
 		
-			var mWc = new WordCloud.WordCloud(1000, 600);
+			var mWc = new WordCloudGen(1000, 600);
 			if(resultPictureBox.Image != null) resultPictureBox.Image.Dispose();
 			Image i = mWc.Draw(Words, Frequencies);
 			resultPictureBox.Image = i;
